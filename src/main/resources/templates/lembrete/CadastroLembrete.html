@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="'layout/LayoutPadrao'">
+
+<head>
+<title>Cadastro de lembrete</title>
+</head>
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<h1>Cadastro de lembrete</h1>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+
+			<form method="POST" th:object="${lembrete}" class="form-vertical  js-form-loading">
+
+				<th:block th:include="fragments/MensagemSucesso"></th:block>
+				<th:block th:include="fragments/MensagensErroValidacao"></th:block>				
+
+				<div class="row">
+					<div class="form-group col-sm-7" th:classappend="${#fields.hasErrors('titulo')} ? has-error">
+						<label for="titulo" class="control-label">Título</label>
+						<input id="titulo" type="text" class="form-control" placeholder="Digite um título para o lembrete..."
+							th:field="*{titulo}" />
+					</div>
+					<div class="form-group col-sm-3" th:classappend="${#fields.hasErrors('categoria')} ? has-error">
+						<label for="categoria" class="control-label">Categoria</label>
+						<div class="an-field-action">
+							<select id="categoria" class="form-control" th:field="*{categoria}">
+								<option value="">Selecione a categoria...</option>
+								<option th:each="categoria : ${categorias}" th:value="${categoria.codigo}" th:text="${categoria.nome}"></option>
+							</select>
+							<div class="an-field-action__icon">
+								<a href="#" data-toggle="modal" data-target="#modalCadastroRapidoCategoria">
+									<i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="form-group col-sm-2">
+						<label for="dataCadastro" class="control-label">Data de cadastro</label>
+						<input id="dataCadastro" type="text" class="form-control" th:field="*{dataCadastro}" readonly />
+					</div>
+				</div>
+
+				<div class="form-group" th:classappend="${#fields.hasErrors('descricao')} ? has-error">
+					<label for="descricao" class="control-label">Descrição</label>
+					<textarea id="descricao" rows="10" class="form-control"
+						placeholder="Digite uma descrição entre 1 e 200 caracteres..." th:field="*{descricao}"></textarea>
+				</div>
+
+				<div class="panel panel-default hidden">
+					<div class="panel-body">
+						<div class="row">
+							<div class="form-group col-sm-4">
+								<label for="grupo" class="control-label">Nome do grupo</label>
+								<div class="an-field-action">
+									<select id="grupo" class="form-control" th:field="*{grupo}">
+										<option value="">Selecione o grupo...</option>
+										<option th:each="grupo : ${grupos}" th:value="${grupo.codigo}" th:text="${grupo.nome}"></option>
+									</select>
+									<div class="an-field-action__icon">
+										<a href="#" data-toggle="modal" data-target="#modalCadastroRapidoGrupo">
+											<i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="form-group col-sm-2">
+								<label class="control-label" for="ordem">Posição no grupo</label>
+								<input id="ordem" type="text" class="form-control js-ordem" placeholder="{0}: início - {-1}: fim"
+									th:field="*{ordem}" th:classappend="${#fields.hasErrors('ordem')} ? has-error" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<button class="btn  btn-primary" type="submit">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						<span style="margin-left: 5px">Salvar</span>
+					</button>
+					<button class="btn  btn-info js-adiciona-grupo" type="button" style="margin-left: 3px">
+						<span class="glyphicon glyphicon-import" aria-hidden="true"></span>
+						<span style="margin-left: 5px">Adicionar a um grupo</span>
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<div th:replace="categoria/CadastroRapidoCategoria :: modal"></div>
+		<div th:replace="grupo/CadastroRapidoGrupo :: modal"></div>
+	</section>
+
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascripts/lembrete.adiciona-grupo.js}"></script>
+	</th:block>
+
+</body>
+</html>
