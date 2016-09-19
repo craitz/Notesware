@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
@@ -27,12 +28,14 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import com.camilo.anotacoes.controller.LembretesController;
 import com.camilo.anotacoes.controller.converter.CategoriaConverter;
 import com.camilo.anotacoes.controller.converter.GrupoConverter;
+import com.camilo.anotacoes.thymeleaf.NoteswareDialect;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
 @ComponentScan(basePackageClasses = { LembretesController.class })
 @EnableWebMvc
+@EnableSpringDataWebSupport
 public class WebConfigClass extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
@@ -56,6 +59,7 @@ public class WebConfigClass extends WebMvcConfigurerAdapter implements Applicati
 		engine.setEnableSpringELCompiler(true);
 		engine.setTemplateResolver(templateResolver());
 		engine.addDialect(new LayoutDialect());
+		engine.addDialect(new NoteswareDialect());
 		return engine;
 	}
 

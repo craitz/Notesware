@@ -15,7 +15,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -31,7 +30,7 @@ public class Lembrete implements Serializable{
 	@Size(min = 1, max = 80, message = "O campo [título] é obrigatório e deve ter entre 1 e 80 caracteres.")
 	private String titulo;
 	
-	@Size(min = 1, max = 200, message = "O campo [descrição] é obrigatório e deve ter entre 1 e 200 caracteres.")
+	@Size(min = 1, max = 1500, message = "O campo [descrição] é obrigatório e deve no máximo 1500 caracteres.")
 	private String descricao;
 
 	@NotNull(message = "O campo [categoria] é obrigatório.")
@@ -43,7 +42,7 @@ public class Lembrete implements Serializable{
 	@JoinColumn(name = "codigo_grupo")
 	private Grupo grupo;
 	
-	@Max(value = 300, message = "O campo [ordem] deve ser menor que 300")
+	@Max(value = 300, message = "O campo [posição no grupo] deve ser menor que 300")
 	private int ordem;
 	
 	@Column(name = "data_cadastro")
@@ -53,7 +52,7 @@ public class Lembrete implements Serializable{
 	public Long getCodigo() {
 		return codigo;
 	}
-
+	
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
