@@ -7,6 +7,9 @@
 	font-size: 18px;
 }
 
+.nw-required > .control-label:after {
+	content: "*";
+}
 
 /*
 ######################
@@ -21,3 +24,56 @@
 
 .an-field-action__icon {
 	margin: 6px 0 0 5px;
+}
+
+/* Tabela Simples */
+.nw-tabela-simples {
+	margin-top: 15px;
+}
+
+.nw-tabela-simples table tr th {
+	border-bottom-width: 1px;
+}
+
+.nw-tabela-simples table tr td {
+    border-top: none;
+    border-bottom: 1px solid #e7eaec;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+/*
+###################
+# PÁGINAS DO SISTEMA
+###################
+*/
+
+/* Colunas - Pesquisa de Cervejas */
+
+.table-lembretes-col-titulo {
+	width: 160px;
+}
+
+.table-lembretes-col-descricao {
+	width: 200px;
+}
+
+.table-lembretes-col-categoria {
+	width: 80px;
+}
+
+.table-lembretes-col-grupo {
+	width: 160px;
+}
+
+.table-lembretes-col-ordem {
+	width: 30px;
+}
+
+.table-lembretes-col-dataCadastro {
+	width: 80px;
+}
+
+.table-lembretes-col-acoes {
+	width: 30px;
+}

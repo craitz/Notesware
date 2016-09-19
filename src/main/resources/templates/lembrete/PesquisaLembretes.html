@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="'layout/LayoutPadrao'"
+	xmlns:notesware="http://notesware.camilo.com">
+
+<head>
+<title>Pesquisa de lembretes</title>
+</head>
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-10">
+						<h1>Pesquisa de lembretes</h1>
+					</div>
+					<div class="col-sm-2">
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-default" th:href="@{/lembretes/novo}">
+								<i class="glyphicon  glyphicon-plus-sign"></i>
+								<span class="hidden-xs  hidden-sm">Novo</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<form method="GET" th:object="${lembreteFilter}">
+
+				<div class="row">
+					<div class="form-group  col-sm-5">
+						<label class="control-label" for="titulo">Título</label>
+						<input type="text" class="form-control" id="titulo" autofocus="autofocus" th:field="*{titulo}" />
+					</div>
+					<div class="form-group  col-sm-7">
+						<label class="control-label" for="descricao">Descrição</label>
+						<input type="text" class="form-control" id="descricao" autofocus="autofocus" th:field="*{descricao}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group  col-sm-5">
+						<label class="control-label" for="categoria">Categoria</label>
+						<select id="categoria" class="form-control" th:field="*{categoria}">
+							<option value="">Todos as categorias</option>
+							<option th:each="categoria : ${categorias}" th:text="${categoria.nome}" th:value="${categoria.codigo}"></option>
+						</select>
+					</div>
+					<div class="form-group  col-sm-5">
+						<label class="control-label" for="grupo">Grupo</label>
+						<select id="grupo" class="form-control" th:field="*{grupo}">
+							<option value="">Todos os grupos</option>
+							<option th:each="grupo : ${grupos}" th:text="${grupo.nome}" th:value="${grupo.codigo}"></option>
+						</select>
+					</div>
+					<div class="form-group  col-sm-2">
+						<label class="control-label" for="dataCadastro">Data de cadastro</label>
+						<input type="text" class="form-control" id="dataCadastro" autofocus="autofocus" th:field="*{dataCadastro}" />
+					</div>
+				</div>
+
+				<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			</form>
+
+			<div class="table-responsive  nw-tabela-simples">
+				<table class="table  table-hover">
+					<thead>
+						<tr>
+
+							<th class="table-lembretes-col-titulo">
+								<notesware:order page="${pagina}" field="titulo" text="Título" />
+							</th>
+							<th class="table-lembretes-col-descricao">
+								<notesware:order page="${pagina}" field="descricao" text="Descrição" />
+							</th>
+							<th class="table-lembretes-col-categoria">
+								<notesware:order page="${pagina}" field="categoria" text="Categoria" />
+							</th>
+							<th class="table-lembretes-col-grupo">
+								<notesware:order page="${pagina}" field="grupo" text="Grupo" />
+							</th>
+							<th class="table-lembretes-col-ordem">Ordem</th>
+							<th class="table-lembretes-col-dataCadastro">
+								<notesware:order page="${pagina}" field="dataCadastro" text="Data" />
+							</th>
+							<th class="table-lembretes-col-acoes"></th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr th:each="lembrete : ${pagina.conteudo}">
+							<td th:text="${lembrete.titulo}"></td>
+							<td th:text="${lembrete.descricao}" style="white-space: pre"></td>
+							<td th:text="${lembrete.categoria.nome}"></td>
+							<td th:text="${(lembrete.grupo != null) ? lembrete.grupo.nome : ''}"></td>
+							<td th:text="${(lembrete.ordem > 0) ? lembrete.ordem : ''}"></td>
+							<td th:text="${{lembrete.dataCadastro}}"></td>
+							<td class="text-center">
+								<a class="btn  btn-link  btn-xs" title="Editar">
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a>
+								<a class="btn  btn-link  btn-xs" title="Excluir">
+									<i class="glyphicon glyphicon-remove"></i>
+								</a>
+							</td>
+						</tr>
+						<tr th:if="${pagina.vazia}">
+							<td colspan="7">Nenhum lembrete encontrado</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-sm-12  text-center" th:if="${not pagina.vazia}">
+				<nav>
+					<ul class="pagination  pagination-sm" th:with="paginaAtual=${pagina.atual}">
+						<li th:class="${pagina.primeira} ? disabled">
+							<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag">
+								<span>&laquo;</span>
+							</a>
+						</li>
+						<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p - 1}">
+							<li th:class="${paginaAtual == numeroPagina} ? active">
+								<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+							</li>
+						</th:block>
+
+						<li th:class="${pagina.ultima} ? disabled">
+							<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag">
+								<span>&raquo;</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+
+		</div>
+	</section>
+</body>
+</html>

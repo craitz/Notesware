@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="'layout/LayoutPadrao'">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="'layout/LayoutPadrao'" xmlns:notesware="http://notesware.camilo.com">
 
 <head>
 <title>Cadastro de lembrete</title>
@@ -9,7 +9,19 @@
 	<section layout:fragment="conteudo">
 		<div class="page-header">
 			<div class="container-fluid">
-				<h1>Cadastro de lembrete</h1>
+				<div class="row">
+					<div class="col-sm-10">
+						<h1>Cadastro de lembrete</h1>
+					</div>
+					<div class="col-sm-2">
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-default" th:href="@{/lembretes}">
+								<i class="glyphicon  glyphicon-search"></i>
+								<span class="hidden-xs  hidden-sm">Pesquisa</span>
+							</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -17,16 +29,15 @@
 
 			<form method="POST" th:object="${lembrete}" class="form-vertical  js-form-loading">
 
-				<th:block th:include="fragments/MensagemSucesso"></th:block>
-				<th:block th:include="fragments/MensagensErroValidacao"></th:block>				
+				<notesware:message/>
 
 				<div class="row">
-					<div class="form-group col-sm-7" th:classappend="${#fields.hasErrors('titulo')} ? has-error">
+					<div class="form-group col-sm-7 nw-required" notesware:classforerror= "titulo">
 						<label for="titulo" class="control-label">Título</label>
 						<input id="titulo" type="text" class="form-control" placeholder="Digite um título para o lembrete..."
 							th:field="*{titulo}" />
 					</div>
-					<div class="form-group col-sm-3" th:classappend="${#fields.hasErrors('categoria')} ? has-error">
+					<div class="form-group col-sm-3 nw-required" notesware:classforerror= "categoria">
 						<label for="categoria" class="control-label">Categoria</label>
 						<div class="an-field-action">
 							<select id="categoria" class="form-control" th:field="*{categoria}">
@@ -46,10 +57,10 @@
 					</div>
 				</div>
 
-				<div class="form-group" th:classappend="${#fields.hasErrors('descricao')} ? has-error">
+				<div class="form-group nw-required" notesware:classforerror= "descricao">
 					<label for="descricao" class="control-label">Descrição</label>
 					<textarea id="descricao" rows="10" class="form-control"
-						placeholder="Digite uma descrição entre 1 e 200 caracteres..." th:field="*{descricao}"></textarea>
+						placeholder="Digite uma descrição de até 1500 caracteres..." th:field="*{descricao}"></textarea>
 				</div>
 
 				<div class="panel panel-default hidden">
@@ -69,10 +80,10 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group col-sm-2">
+							<div class="form-group col-sm-2" notesware:classforerror= "ordem">
 								<label class="control-label" for="ordem">Posição no grupo</label>
 								<input id="ordem" type="text" class="form-control js-ordem" placeholder="{0}: início - {-1}: fim"
-									th:field="*{ordem}" th:classappend="${#fields.hasErrors('ordem')} ? has-error" />
+									th:field="*{ordem}" />
 							</div>
 						</div>
 					</div>
@@ -83,7 +94,7 @@
 						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 						<span style="margin-left: 5px">Salvar</span>
 					</button>
-					<button class="btn  btn-info js-adiciona-grupo" type="button" style="margin-left: 3px">
+					<button class="btn btn-info js-adiciona-grupo" type="button" style="margin-left: 3px">
 						<span class="glyphicon glyphicon-import" aria-hidden="true"></span>
 						<span style="margin-left: 5px">Adicionar a um grupo</span>
 					</button>
@@ -97,6 +108,8 @@
 
 	<th:block layout:fragment="javascript-extra">
 		<script th:src="@{/javascripts/lembrete.adiciona-grupo.js}"></script>
+		<script th:src="@{/javascripts/categoria.cadastro-rapido.js}"></script>
+		<script th:src="@{/javascripts/grupo.cadastro-rapido.js}"></script>
 	</th:block>
 
 </body>
